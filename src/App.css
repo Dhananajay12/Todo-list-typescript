@@ -1,0 +1,7 @@
+.single-todo {
+	display: flex;
+	background: #121212;
+	width: 290px;
+	margin-top: 1rem;
+	color: wheat;
+}
