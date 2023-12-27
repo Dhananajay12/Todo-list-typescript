@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
 import { Todoobj } from '../model'
 import SingleTodo from './SingleTodo'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store/Store'
 
 
 interface Todo {
@@ -8,20 +10,16 @@ interface Todo {
 	setTodos: React.Dispatch<React.SetStateAction<Todoobj[]>>
 }
 
-const TodoList: FC<Todo> = ({ todos, setTodos }) => {
+const TodoList: FC<Todo> = ({  setTodos }) => {
 
-
-	console.log(setTodos , "data")
-	// const changeInfo = (id) =>{
-	// 	setTodos(})  
-	// }
+	const todoss = useSelector((state: RootState) => state.todo.todos)
 
 	return (
 		<>
-			{todos.map((todo ,index ) => {
+			{todoss.map((todo ,index ) => {
 				return (
 					<>
-						<SingleTodo todo={todo} setTodos={setTodos} todos={todos} key={todo.id} index={index}/>
+						<SingleTodo todo={todo} setTodos={setTodos} todos={todoss} key={todo.id} index={index}/>
 					</>
 				)
 			})} 

@@ -1,6 +1,8 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
 import { Todoobj } from '../model'
 import { Check, Pencil, Trash2 } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { deleteTodo, isDone, updateTodo } from '../store/TodoSlice';
 
 interface Todo {
 	index: number;
@@ -14,21 +16,20 @@ const SingleTodo: FC<Todo> = ({ todo, todos, setTodos }) => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [todoData, setTodoData] = useState(todo.todo);
 
+	const dispatch = useDispatch();
+
 	const handleUpdate = (e: React.FormEvent, id: number) => {
 		e.preventDefault();
-		setTodos(
-			todos.map((todo) => (todo.id === id ? { ...todo, todo: todoData } : todo))
-		);
+		dispatch(updateTodo({ todoData, id }))
 		setIsEdit(false);
 	};
 
 	const handleDelete = (id: number) => {
-		// e.preventDefault();
-		setTodos(todos.filter(todo => todo.id !== id));
+		dispatch(deleteTodo({ id }))
 	};
 
 	const handleDone = (id: number) => {
-		setTodos(todos.map((todo) => (todo.id === id ? { ...todo, idDone: !todo.idDone } : todo)));
+		dispatch(isDone({ id, idDone: todo.idDone }))
 	}
 
 	const inputRef = useRef<HTMLInputElement>(null)
@@ -37,11 +38,9 @@ const SingleTodo: FC<Todo> = ({ todo, todos, setTodos }) => {
 		inputRef.current?.focus();
 	}, [isEdit])
 
-
-
 	return (
 		<div className='single-todo' >
-			<form onSubmit={(e) => handleUpdate(e, todo.id)} style={{ display: 'flex', justifyContent: 'space-between', width: '100%' , paddingRight: '1rem' }}>
+			<form onSubmit={(e) => handleUpdate(e, todo.id)} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', paddingRight: '1rem' }}>
 				<div className="input-field-style" >
 
 					{isEdit ? (
@@ -49,7 +48,7 @@ const SingleTodo: FC<Todo> = ({ todo, todos, setTodos }) => {
 							value={todoData}
 							onChange={(e) => setTodoData(e.target.value)}
 							ref={inputRef}
-							style={{padding:"5px" }}
+							style={{ padding: "5px" }}
 						// ref={inputRef}
 						/>
 					) : todo.idDone ? (
