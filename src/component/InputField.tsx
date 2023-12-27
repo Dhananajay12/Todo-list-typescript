@@ -11,10 +11,10 @@ const InputField: FC<Porps> = ({ todo, setTodo, handleChange }) => {
 
 	// console.log(setTodo, "data1")
 	return (
-		<div>
-			<form onSubmit={handleChange}>
-				<input type='text' value={todo} onChange={(e) => setTodo(e.target.value)} />
-				<button type='submit'>Submit</button>
+		<div className='form-style'>
+			<form onSubmit={handleChange} >
+				<input type='text' placeholder='please enter task' value={todo} onChange={(e) => setTodo(e.target.value)} className='input-field-style-1'/>
+				<button type='submit' className='button-1'>Submit</button>
 			</form>
 		</div>
 	)

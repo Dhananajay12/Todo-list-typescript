@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { Todoobj } from '../model'
 import { Check, Pencil, Trash2 } from 'lucide-react';
 
@@ -28,31 +28,43 @@ const SingleTodo: FC<Todo> = ({ todo, todos, setTodos }) => {
 	};
 
 	const handleDone = (id: number) => {
-		setTodos(todos.map((todo) => (todo.id === id ? { ...todo, idDone : !todo.idDone } : todo)));
+		setTodos(todos.map((todo) => (todo.id === id ? { ...todo, idDone: !todo.idDone } : todo)));
 	}
+
+	const inputRef = useRef<HTMLInputElement>(null)
+
+	useEffect(() => {
+		inputRef.current?.focus();
+	}, [isEdit])
+
+
 
 	return (
 		<div className='single-todo' >
-			<form onSubmit={(e) => handleUpdate(e, todo.id)} style={{display:'flex'}}>
-				<div style={{width:'120px' , margin:'1rem' }}>
-				{isEdit ? (
-					<input
-						value={todoData}
-						onChange={(e) => setTodoData(e.target.value)}
-             
-					// ref={inputRef}
-					/>
-				) : todo.idDone ? (
-					<s >{todo.todo}</s>
-				) : (
-					<span >{todo.todo}</span>
-				)}
-				</div>
-		
+			<form onSubmit={(e) => handleUpdate(e, todo.id)} style={{ display: 'flex', justifyContent: 'space-between', width: '100%' , paddingRight: '1rem' }}>
+				<div className="input-field-style" >
 
-			<p style={{ marginLeft: "1rem" }} onClick={() => { setIsEdit(!isEdit) }}><Pencil /></p>
-			<p style={{ marginLeft: "1rem" }} onClick={() => { handleDelete(todo.id) }}><Trash2 /></p>
-			<p style={{ marginLeft: "1rem" }} onClick={() => { handleDone(todo.id) }}><Check /></p>
+					{isEdit ? (
+						<input
+							value={todoData}
+							onChange={(e) => setTodoData(e.target.value)}
+							ref={inputRef}
+							style={{padding:"5px" }}
+						// ref={inputRef}
+						/>
+					) : todo.idDone ? (
+						<s >{todo.todo}</s>
+					) : (
+						<span >{todo.todo}</span>
+					)}
+				</div>
+
+				<div style={{ display: "flex" }}>
+
+					<p style={{ marginLeft: "1rem" }} onClick={() => { setIsEdit(!isEdit) }}><Pencil /></p>
+					<p style={{ marginLeft: "1rem" }} onClick={() => { handleDelete(todo.id) }}><Trash2 /></p>
+					<p style={{ marginLeft: "1rem" }} onClick={() => { handleDone(todo.id) }}><Check /></p>
+				</div>
 			</form>
 
 			{/* <p style={{ marginLeft: "1rem" }} >Delete</p> */}
