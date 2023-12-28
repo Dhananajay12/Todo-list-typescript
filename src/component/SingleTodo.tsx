@@ -11,7 +11,7 @@ interface Todo {
 	setTodos: React.Dispatch<React.SetStateAction<Todoobj[]>>; // Change this line
 }
 
-const SingleTodo: FC<Todo> = ({ todo, todos, setTodos }) => {
+const SingleTodo: FC<Todo> = ({ todo  }) => {
 
 	const [isEdit, setIsEdit] = useState(false);
 	const [todoData, setTodoData] = useState(todo.todo);
